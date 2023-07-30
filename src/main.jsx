@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.scss";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Sector } from "./pages";
 
 const router = createBrowserRouter([
 	/**
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <App />,
+	},
+	{
+		path: "sector",
+		element: <Sector />,
 	},
 ]);
 
