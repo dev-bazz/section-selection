@@ -22,7 +22,7 @@ export function ButtonLink({ text = "Add Data" }) {
 /**
  * Prop Validations
  */
-ButtonLink.prototype = {
+ButtonLink.propTypes = {
 	text: propTypes.string,
 };
 Button.propTypes = {
