@@ -1,0 +1,13 @@
+.container {
+	min-height: 100vh;
+	min-height: 100dvh;
+	display: grid;
+	place-items: center;
+	background: linear-gradient(
+		46deg,
+		#77c3fd 0%,
+		#6d7cfd 47.81%,
+		#b3aafc 100%
+	);
+	padding-inline: 1rem;
+}
