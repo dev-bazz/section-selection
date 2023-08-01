@@ -4,6 +4,7 @@ import App from "./App.jsx";
 import "./index.scss";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Sector } from "./pages";
+import AppProvider from "./config/context.jsx";
 
 const router = createBrowserRouter([
 	/**
@@ -23,6 +24,8 @@ const router = createBrowserRouter([
 //  Render Application
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<AppProvider>
+			<RouterProvider router={router} />
+		</AppProvider>
 	</React.StrictMode>
 );

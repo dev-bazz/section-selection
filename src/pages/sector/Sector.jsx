@@ -1,3 +1,9 @@
+import { Background } from "../../components";
+
 export function Sector() {
-	return <div>Sector FFF</div>;
+	return (
+		<Background>
+			<div>Sector FFF</div>
+		</Background>
+	);
 }
