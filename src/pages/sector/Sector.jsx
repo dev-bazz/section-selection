@@ -4,11 +4,13 @@ import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useNavigate } from "react-router-dom";
 import { useAppContext, useFirebase } from "../../config";
-import { useEffect } from "react";
+import { useEffect, useCallback, useRef } from "react";
 
 export function Sector() {
-	const { setData, data } = useAppContext();
+	const { setData, data, appSector } = useAppContext();
+	const sectors = useRef([]);
 	const navigate = useNavigate();
+
 	const { register, control, formState, reset, handleSubmit } = useForm({
 			defaultValues: {
 				name: "",
@@ -18,11 +20,13 @@ export function Sector() {
 		{ errors } = formState;
 
 	const { fetchData } = useFirebase();
-	useEffect(() => {
+
+	const fetchDataCallBack = useCallback(() => {
 		Promise.all([fetchData("account"), fetchData()])
 			.then(([res1, res2]) => {
 				console.log(res1);
 				console.log(res2);
+				appSector.current = res2;
 			})
 			.catch((err) => {
 				console.log(err);
@@ -31,6 +35,10 @@ export function Sector() {
 				setData(true);
 			});
 	}, [fetchData, setData]);
+
+	useEffect(() => {
+		fetchDataCallBack();
+	}, [fetchDataCallBack]);
 
 	// Effects
 
@@ -105,7 +113,19 @@ export function Sector() {
 									value={""}>
 									Select Sector
 								</option>
-								<option value="1">Testing</option>
+								{appSector.current.map((sector, key) => (
+									<optgroup
+										key={key}
+										label={sector.label}>
+										{sector.options.map((option, key) => (
+											<option
+												key={key}
+												value={option.value}>
+												{option.label}
+											</option>
+										))}
+									</optgroup>
+								))}
 							</select>
 							{errors.sectors && (
 								<p className={errors.sectors ? styles.error_message : ""}>

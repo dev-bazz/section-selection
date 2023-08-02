@@ -51,6 +51,7 @@ export const useFirebase = () => {
 	return {
 		app, // Assuming app is defined somewhere else
 		fetchData,
+		setData,
 	};
 };
 
