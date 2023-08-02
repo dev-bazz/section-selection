@@ -3,11 +3,11 @@ import styles from "./styles.module.scss";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useNavigate } from "react-router-dom";
-import { useAppContext } from "../../config";
+import { useAppContext, useFirebase } from "../../config";
 import { useEffect } from "react";
 
 export function Sector() {
-	const { setData } = useAppContext();
+	const { setData, data } = useAppContext();
 	const navigate = useNavigate();
 	const { register, control, formState, reset, handleSubmit } = useForm({
 			defaultValues: {
@@ -16,6 +16,10 @@ export function Sector() {
 			},
 		}),
 		{ errors } = formState;
+
+	const { fetchData } = useFirebase();
+	fetchData("account");
+	fetchData();
 
 	// Effects
 	useEffect(() => {}, []);
@@ -38,6 +42,7 @@ export function Sector() {
 						Please enter your name and pick the Sectors you are currently
 						involved in.
 					</p>
+					{data ? <p>Data Loaded</p> : <p>Loading</p>}
 					<div style={{ maxWidth: "402px", width: "100%" }}>
 						<div
 							style={{

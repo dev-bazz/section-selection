@@ -1,5 +1,13 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import {
+	getFirestore,
+	collection,
+	getDocs,
+	onSnapshot,
+} from "firebase/firestore";
+import { useAppContext } from "./context";
+import { useEffect } from "react";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,11 +22,62 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore();
 
-export const useFirebase = (name) => {
-	// Initialize Firebase
-	const app = initializeApp(firebaseConfig);
+export const useFirebase = () => {
+	const { setData, data: appData } = useAppContext();
+
+	useEffect(() => {
+		setData(false);
+	}, [setData]);
+
+	async function fetchData(name = "sectors") {
+		const constRef = collection(db, name);
+
+		try {
+			const data = await getDocs(constRef);
+			const res = data.docs.map((doc) => {
+				return doc.data();
+			});
+			setData(true);
+			console.log("AppData", appData);
+			return res;
+		} catch (error) {
+			console.error("Error fetching data:", error);
+			setData(true);
+			return [];
+		}
+	}
+
 	return {
-		app,
+		app: app, // Assuming app is defined somewhere else
+		fetchData: fetchData,
 	};
 };
+
+// export const useFirebase = () => {
+// 	// Initialize Firebase
+// 	const { setData, data } = useAppContext();
+// 	useEffect(() => {
+// 		setData(false);
+// 	}, [data, setData]);
+
+// 	async function fetchData(name = "sectors") {
+// 		console.log();
+// 		const constRef = collection(db, name);
+
+// 		const data = await getDocs(constRef);
+// 		const res = data.docs.map((doc) => {
+// 			console.log(setData(true));
+// 			console.log(doc.data());
+// 			return doc.data();
+// 		});
+// 		return res;
+// 	}
+
+// 	return {
+// 		app,
+// 		fetchData,
+// 	};
+// };
