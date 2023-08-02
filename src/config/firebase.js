@@ -28,9 +28,7 @@ const db = getFirestore();
 export const useFirebase = () => {
 	const { setData, data: appData } = useAppContext();
 
-	useEffect(() => {
-		setData(false);
-	}, [setData]);
+	useEffect(() => {}, []);
 
 	async function fetchData(name = "sectors") {
 		const constRef = collection(db, name);
@@ -40,19 +38,19 @@ export const useFirebase = () => {
 			const res = data.docs.map((doc) => {
 				return doc.data();
 			});
-			setData(true);
+
 			console.log("AppData", appData);
 			return res;
 		} catch (error) {
 			console.error("Error fetching data:", error);
-			setData(true);
+
 			return [];
 		}
 	}
 
 	return {
-		app: app, // Assuming app is defined somewhere else
-		fetchData: fetchData,
+		app, // Assuming app is defined somewhere else
+		fetchData,
 	};
 };
 

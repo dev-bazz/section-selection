@@ -1,4 +1,4 @@
-import { Background, Button } from "../../components";
+import { Background, Button, Loader } from "../../components";
 import styles from "./styles.module.scss";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
@@ -18,11 +18,22 @@ export function Sector() {
 		{ errors } = formState;
 
 	const { fetchData } = useFirebase();
-	fetchData("account");
-	fetchData();
+	useEffect(() => {
+		Promise.all([fetchData("account"), fetchData()])
+			.then(([res1, res2]) => {
+				console.log(res1);
+				console.log(res2);
+			})
+			.catch((err) => {
+				console.log(err);
+			})
+			.finally(() => {
+				setData(true);
+			});
+	}, [fetchData, setData]);
 
 	// Effects
-	useEffect(() => {}, []);
+
 	const onSubmit = (data) => {
 		console.log(data);
 
@@ -107,6 +118,7 @@ export function Sector() {
 				</form>
 			</Background>
 			<DevTool control={control} />
+			{data || <Loader />}
 		</>
 	);
 }
