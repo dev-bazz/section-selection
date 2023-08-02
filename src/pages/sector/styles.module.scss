@@ -1,0 +1,64 @@
+@use "../../constants.scss" as *;
+
+@mixin input {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	input,
+	select {
+		border-radius: 12px;
+		border: 1px solid #8b96a0;
+		min-height: 18px;
+		padding: 10px 16px;
+	}
+
+	label {
+		color: #262626;
+		font-weight: 700;
+	}
+}
+.form {
+	@include baseForm;
+
+	&_title {
+		margin-top: 50px;
+	}
+
+	&_description {
+		color: #8b96a0;
+		max-width: 42ch;
+		text-align: center;
+		margin-top: 1rem;
+	}
+
+	&_input {
+		@include input();
+	}
+
+	&_input_error {
+		@include input();
+		input,
+		select {
+			border: 1px solid red;
+			&:is(
+					::placeholder,
+					::-webkit-input-placeholder,
+					:-ms-input-placeholder,
+					:-moz-placeholder
+				) {
+				color: red;
+			}
+		}
+		label {
+			color: red;
+			font-weight: 700;
+		}
+	}
+}
+
+.error_message {
+	position: absolute;
+	color: red;
+	font-size: 11px;
+	bottom: -18px;
+}
