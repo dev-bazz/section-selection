@@ -16,8 +16,7 @@ export function ButtonLink({ text = "Add Data" }) {
 				placeItems: "center",
 			}}
 			to={"/sector"}
-			className={styles.button}
-			replace={true}>
+			className={styles.button}>
 			{data ? "Update Data" : text}
 		</Link>
 	);
