@@ -6,7 +6,7 @@ import { useEffect } from "react";
 const appContext = createContext();
 export default function AppProvider({ children }) {
 	const [data, setData] = useState(false);
-	const appSector = useRef([]);
+	const [appSector, setAppSector] = useState(null);
 	const [sessionData, setSessionData] = useState(null);
 
 	return (
@@ -17,6 +17,7 @@ export default function AppProvider({ children }) {
 				appSector,
 				sessionData,
 				setSessionData,
+				setAppSector,
 			}}>
 			{children}
 		</appContext.Provider>

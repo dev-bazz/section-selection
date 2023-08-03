@@ -78,6 +78,7 @@ export const useFirebase = () => {
 
 	async function fetchData(name = "sectors") {
 		const constRef = collection(db, name);
+		setData(false);
 
 		try {
 			const data = await getDocs(constRef);
@@ -91,13 +92,15 @@ export const useFirebase = () => {
 			console.error("Error fetching data:", error);
 
 			return [];
+		} finally {
+			setData(true);
 		}
 	}
 
 	return {
 		app, // Assuming app is defined somewhere else
 		fetchData,
-		setData,
+
 		getDocSnapshopById,
 	};
 };

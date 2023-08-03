@@ -6,9 +6,13 @@ import { useNavigate } from "react-router-dom";
 import {
 	useAppContext,
 	useCreateSessionAndUpdateData,
+	useFirebase,
 } from "../../config";
+import { useEffect } from "react";
 export function Sector() {
-	const { setData, appSector, setSessionData } = useAppContext();
+	const { fetchData } = useFirebase();
+	const { setData, appSector, setSessionData, setAppSector } =
+		useAppContext();
 	const navigate = useNavigate();
 
 	const { register, control, formState, reset, handleSubmit } = useForm({
@@ -20,6 +24,12 @@ export function Sector() {
 		{ errors } = formState;
 
 	const { createSession, updateSession } = useCreateSessionAndUpdateData();
+
+	useEffect(() => {
+		fetchData().then((res) => {
+			setAppSector(res);
+		});
+	}, []);
 
 	// Effects
 
@@ -100,7 +110,7 @@ export function Sector() {
 									value={""}>
 									Select Sector
 								</option>
-								{appSector.current.map((sector, key) => (
+								{appSector?.map((sector, key) => (
 									<optgroup
 										key={key}
 										label={sector.label}>
