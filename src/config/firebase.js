@@ -8,6 +8,7 @@ import {
 	addDoc,
 	updateDoc,
 	doc,
+	getDoc,
 } from "firebase/firestore";
 import { useAppContext } from "./context";
 import { useEffect } from "react";
@@ -28,6 +29,13 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore();
+
+export const getDocSnapshopById = async () => {
+	const docRef = doc(db, "sessions", sessionStorage.getItem("sessionId"));
+	const docSnap = await getDoc(docRef);
+
+	return { isTrue: true, ...docSnap.data() };
+};
 
 export const useCreateSessionAndUpdateData = () => {
 	const createSession = async () => {
@@ -90,5 +98,6 @@ export const useFirebase = () => {
 		app, // Assuming app is defined somewhere else
 		fetchData,
 		setData,
+		getDocSnapshopById,
 	};
 };

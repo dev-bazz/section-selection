@@ -1,14 +1,37 @@
-import { useLocation } from "react-router-dom";
+import { useState } from "react";
 import styles from "./App.module.scss";
-import { Background, ButtonLink } from "./components";
-import { useAppContext } from "./config";
-import { useEffect } from "react";
+import { Background, ButtonLink, Loader } from "./components";
+import { useAppContext, useFirebase } from "./config";
+import { useEffect, useCallback, useRef } from "react";
 
 function App() {
-	const { state } = useLocation();
-	const { data } = useAppContext();
+	const { data, appSector, setData, sessionData, setSessionData } =
+		useAppContext();
+	const { fetchData, getDocSnapshopById } = useFirebase();
+	const [current, setCurrent] = useState(false);
+	// -----
 
-	useEffect(() => {});
+	useEffect(() => {
+		const fetchDataCallBack = () => {
+			Promise.all([fetchData()])
+				.then(([res1]) => {
+					console.log(res1);
+					appSector.current = res1;
+				})
+				.catch((err) => {
+					console.log(err);
+				})
+				.finally(() => {
+					setData(true);
+				});
+		};
+		fetchDataCallBack();
+		getDocSnapshopById().then((res) => {
+			console.log("miki", res);
+			setSessionData(res);
+		});
+	}, [setSessionData]);
+
 	return (
 		<Background>
 			<div className={styles.form}>
@@ -17,10 +40,10 @@ function App() {
 					Please Click the Add Data button to add your data
 				</p>
 				<div className={styles.form_data}>
-					{data ? (
+					{sessionData ? (
 						<>
-							<p>{state?.name}</p>
-							<p>{state?.sectors}</p>
+							<p>{sessionData?.name}</p>
+							<p>{sessionData?.sectors}</p>
 						</>
 					) : (
 						<p>No Data Added</p>
@@ -28,6 +51,7 @@ function App() {
 				</div>
 				<ButtonLink />
 			</div>
+			{data || <Loader />}
 		</Background>
 	);
 }

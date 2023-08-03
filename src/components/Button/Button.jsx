@@ -7,7 +7,7 @@ export function Button({ text = "Button" }) {
 }
 
 export function ButtonLink({ text = "Add Data" }) {
-	const { data } = useAppContext();
+	const { sessionData } = useAppContext();
 
 	return (
 		<Link
@@ -17,7 +17,7 @@ export function ButtonLink({ text = "Add Data" }) {
 			}}
 			to={"/sector"}
 			className={styles.button}>
-			{data ? "Update Data" : text}
+			{sessionData ? "Update Data" : text}
 		</Link>
 	);
 }

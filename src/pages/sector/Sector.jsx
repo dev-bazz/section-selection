@@ -1,4 +1,4 @@
-import { Background, Button, Loader } from "../../components";
+import { Background, Button } from "../../components";
 import styles from "./styles.module.scss";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
@@ -6,12 +6,9 @@ import { useNavigate } from "react-router-dom";
 import {
 	useAppContext,
 	useCreateSessionAndUpdateData,
-	useFirebase,
 } from "../../config";
-import { useEffect, useCallback } from "react";
-
 export function Sector() {
-	const { setData, data, appSector } = useAppContext();
+	const { setData, appSector, setSessionData } = useAppContext();
 	const navigate = useNavigate();
 
 	const { register, control, formState, reset, handleSubmit } = useForm({
@@ -22,36 +19,19 @@ export function Sector() {
 		}),
 		{ errors } = formState;
 
-	const { fetchData } = useFirebase();
 	const { createSession, updateSession } = useCreateSessionAndUpdateData();
-
-	const fetchDataCallBack = useCallback(() => {
-		Promise.all([fetchData()])
-			.then(([res1]) => {
-				console.log(res1);
-				appSector.current = res1;
-			})
-			.catch((err) => {
-				console.log(err);
-			})
-			.finally(() => {
-				setData(true);
-			});
-	}, [fetchData, setData]);
-
-	useEffect(() => {
-		fetchDataCallBack();
-	}, [fetchDataCallBack]);
 
 	// Effects
 
 	const onSubmit = (data) => {
+		setData(false);
 		console.log(data);
 
 		reset();
-		setData(true);
+
 		createSession().then(() => {
 			updateSession(data);
+			setSessionData(data);
 		});
 
 		navigate({ pathname: "/" }, { replace: true, state: data });
@@ -145,7 +125,6 @@ export function Sector() {
 				</form>
 			</Background>
 			<DevTool control={control} />
-			{data || <Loader />}
 		</>
 	);
 }
