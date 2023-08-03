@@ -2,10 +2,13 @@ import { useLocation } from "react-router-dom";
 import styles from "./App.module.scss";
 import { Background, ButtonLink } from "./components";
 import { useAppContext } from "./config";
+import { useEffect } from "react";
 
 function App() {
 	const { state } = useLocation();
 	const { data } = useAppContext();
+
+	useEffect(() => {});
 	return (
 		<Background>
 			<div className={styles.form}>
@@ -16,8 +19,8 @@ function App() {
 				<div className={styles.form_data}>
 					{data ? (
 						<>
-							<p>{state.name}</p>
-							<p>{state.sectors}</p>
+							<p>{state?.name}</p>
+							<p>{state?.sectors}</p>
 						</>
 					) : (
 						<p>No Data Added</p>

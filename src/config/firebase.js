@@ -5,9 +5,13 @@ import {
 	collection,
 	getDocs,
 	onSnapshot,
+	addDoc,
+	updateDoc,
+	doc,
 } from "firebase/firestore";
 import { useAppContext } from "./context";
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -24,6 +28,40 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore();
+
+export const useCreateSessionAndUpdateData = () => {
+	const createSession = async () => {
+		if (sessionStorage.getItem("sessionId")) return;
+		await addDoc(collection(db, "sessions"), {
+			name: "test",
+			sectors: 10,
+		}).then((DocumentReference) => {
+			console.log("Document written with ID: ", DocumentReference.id);
+			sessionStorage.setItem("sessionId", DocumentReference.id);
+		});
+	};
+
+	const updateSession = async (
+		data = {
+			name: "Updated",
+			sectors: 200,
+		}
+	) => {
+		const docRef = doc(db, "sessions", sessionStorage.getItem("sessionId"));
+		updateDoc(docRef, data)
+			.then(() => {
+				console.log("Document successfully updated!");
+			})
+			.catch((error) => {
+				console.error("Error updating document: ", error);
+			});
+	};
+
+	return {
+		createSession,
+		updateSession,
+	};
+};
 
 export const useFirebase = () => {
 	const { setData, data: appData } = useAppContext();
@@ -54,29 +92,3 @@ export const useFirebase = () => {
 		setData,
 	};
 };
-
-// export const useFirebase = () => {
-// 	// Initialize Firebase
-// 	const { setData, data } = useAppContext();
-// 	useEffect(() => {
-// 		setData(false);
-// 	}, [data, setData]);
-
-// 	async function fetchData(name = "sectors") {
-// 		console.log();
-// 		const constRef = collection(db, name);
-
-// 		const data = await getDocs(constRef);
-// 		const res = data.docs.map((doc) => {
-// 			console.log(setData(true));
-// 			console.log(doc.data());
-// 			return doc.data();
-// 		});
-// 		return res;
-// 	}
-
-// 	return {
-// 		app,
-// 		fetchData,
-// 	};
-// };

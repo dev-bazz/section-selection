@@ -6,12 +6,14 @@ const appContext = createContext();
 export default function AppProvider({ children }) {
 	const [data, setData] = useState(false);
 	const appSector = useRef([]);
+	const sessionID = useRef("");
 	return (
 		<appContext.Provider
 			value={{
 				data,
 				setData,
 				appSector,
+				sessionID,
 			}}>
 			{children}
 		</appContext.Provider>

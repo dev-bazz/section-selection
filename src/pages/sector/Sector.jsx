@@ -3,7 +3,11 @@ import styles from "./styles.module.scss";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useNavigate } from "react-router-dom";
-import { useAppContext, useFirebase } from "../../config";
+import {
+	useAppContext,
+	useCreateSessionAndUpdateData,
+	useFirebase,
+} from "../../config";
 import { useEffect, useCallback, useRef } from "react";
 
 export function Sector() {
@@ -20,13 +24,13 @@ export function Sector() {
 		{ errors } = formState;
 
 	const { fetchData } = useFirebase();
+	const { createSession, updateSession } = useCreateSessionAndUpdateData();
 
 	const fetchDataCallBack = useCallback(() => {
-		Promise.all([fetchData("account"), fetchData()])
-			.then(([res1, res2]) => {
+		Promise.all([fetchData(), createSession()])
+			.then(([res1]) => {
 				console.log(res1);
-				console.log(res2);
-				appSector.current = res2;
+				appSector.current = res1;
 			})
 			.catch((err) => {
 				console.log(err);
@@ -47,6 +51,7 @@ export function Sector() {
 
 		reset();
 		setData(true);
+		updateSession(data);
 		navigate({ pathname: "/" }, { replace: true, state: data });
 	};
 
@@ -61,7 +66,7 @@ export function Sector() {
 						Please enter your name and pick the Sectors you are currently
 						involved in.
 					</p>
-					{data ? <p>Data Loaded</p> : <p>Loading</p>}
+
 					<div style={{ maxWidth: "402px", width: "100%" }}>
 						<div
 							style={{
