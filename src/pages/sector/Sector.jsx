@@ -11,14 +11,14 @@ import {
 import { useEffect } from "react";
 export function Sector() {
 	const { fetchData } = useFirebase();
-	const { setData, appSector, setSessionData, setAppSector } =
+	const { setData, appSector, setSessionData, setAppSector, sessionData } =
 		useAppContext();
 	const navigate = useNavigate();
 
 	const { register, control, formState, reset, handleSubmit } = useForm({
 			defaultValues: {
-				name: "",
-				sectors: "",
+				name: sessionData ? sessionData.name : "",
+				sectors: sessionData ? sessionData.sectors : "",
 			},
 		}),
 		{ errors } = formState;

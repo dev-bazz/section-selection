@@ -31,6 +31,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore();
 
 export const getDocSnapshopById = async () => {
+	if (!sessionStorage.getItem("sessionId")) return;
 	const docRef = doc(db, "sessions", sessionStorage.getItem("sessionId"));
 	const docSnap = await getDoc(docRef);
 
