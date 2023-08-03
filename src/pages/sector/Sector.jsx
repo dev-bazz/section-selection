@@ -8,11 +8,10 @@ import {
 	useCreateSessionAndUpdateData,
 	useFirebase,
 } from "../../config";
-import { useEffect, useCallback, useRef } from "react";
+import { useEffect, useCallback } from "react";
 
 export function Sector() {
 	const { setData, data, appSector } = useAppContext();
-	const sectors = useRef([]);
 	const navigate = useNavigate();
 
 	const { register, control, formState, reset, handleSubmit } = useForm({
@@ -27,7 +26,7 @@ export function Sector() {
 	const { createSession, updateSession } = useCreateSessionAndUpdateData();
 
 	const fetchDataCallBack = useCallback(() => {
-		Promise.all([fetchData(), createSession()])
+		Promise.all([fetchData()])
 			.then(([res1]) => {
 				console.log(res1);
 				appSector.current = res1;
@@ -51,7 +50,10 @@ export function Sector() {
 
 		reset();
 		setData(true);
-		updateSession(data);
+		createSession().then(() => {
+			updateSession(data);
+		});
+
 		navigate({ pathname: "/" }, { replace: true, state: data });
 	};
 

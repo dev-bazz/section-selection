@@ -10,7 +10,7 @@ import {
 	doc,
 } from "firebase/firestore";
 import { useAppContext } from "./context";
-import { useEffect, useState, useRef } from "react";
+import { useEffect } from "react";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
