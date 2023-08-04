@@ -1,7 +1,7 @@
 import { Background, Button } from "../../components";
 import styles from "./styles.module.scss";
 import { useForm } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
+
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo-sector.png";
 import {
@@ -160,7 +160,6 @@ export function Sector() {
 					<Button text="Save" />
 				</form>
 			</Background>
-			<DevTool control={control} />
 		</>
 	);
 }
