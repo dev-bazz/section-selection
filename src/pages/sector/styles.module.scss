@@ -62,3 +62,20 @@
 	font-size: 11px;
 	bottom: -18px;
 }
+
+.terms {
+	display: flex;
+	gap: 6px;
+	align-items: center;
+	margin-top: 16px;
+	position: relative;
+
+	& > * {
+		cursor: pointer;
+	}
+
+	input {
+		padding: 20px;
+		accent-color: #3b4ffc;
+	}
+}

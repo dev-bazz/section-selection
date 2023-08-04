@@ -1,7 +1,6 @@
 import { createContext } from "react";
 import PropTypes from "prop-types";
-import { useContext, useState, useRef } from "react";
-import { useEffect } from "react";
+import { useContext, useState } from "react";
 
 const appContext = createContext();
 export default function AppProvider({ children }) {

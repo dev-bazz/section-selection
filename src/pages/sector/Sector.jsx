@@ -3,6 +3,7 @@ import styles from "./styles.module.scss";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useNavigate } from "react-router-dom";
+import logo from "../../assets/logo-sector.png";
 import {
 	useAppContext,
 	useCreateSessionAndUpdateData,
@@ -19,6 +20,7 @@ export function Sector() {
 			defaultValues: {
 				name: sessionData ? sessionData.name : "",
 				sectors: sessionData ? sessionData.sectors : "",
+				checkbox: false,
 			},
 		}),
 		{ errors } = formState;
@@ -35,7 +37,6 @@ export function Sector() {
 
 	const onSubmit = (data) => {
 		setData(false);
-		console.log(data);
 
 		reset();
 
@@ -53,6 +54,14 @@ export function Sector() {
 				<form
 					className={styles.form}
 					onSubmit={handleSubmit(onSubmit)}>
+					<div
+						style={{
+							position: "absolute",
+
+							top: "-44px",
+						}}>
+						<img src={logo} />
+					</div>
 					<h1 className={styles.form_title}>Add Data</h1>
 					<p className={styles.form_description}>
 						Please enter your name and pick the Sectors you are currently
@@ -101,7 +110,6 @@ export function Sector() {
 								id="sector"
 								{...register("sectors", {
 									required: {
-										message: "Please Select a Sector",
 										value: true,
 									},
 								})}>
@@ -127,6 +135,24 @@ export function Sector() {
 							{errors.sectors && (
 								<p className={errors.sectors ? styles.error_message : ""}>
 									{errors.sectors.message}
+								</p>
+							)}
+						</div>
+						<div className={styles.terms}>
+							<input
+								type="checkbox"
+								id="checkbox"
+								{...register("checkbox", {
+									required: {
+										message: "You must agree to terms",
+										value: true,
+									},
+								})}
+							/>
+							<label htmlFor="checkbox">Agree to terms</label>
+							{errors.checkbox && (
+								<p className={errors.checkbox ? styles.error_message : ""}>
+									{errors.checkbox.message}
 								</p>
 							)}
 						</div>
